@@ -17,6 +17,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1RxegXx8T9SOZ1F52ZvvhgdwtTf" />
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -226,7 +229,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1570008799121</updated>
-      <workItem from="1571071193266" duration="2697000" />
+      <workItem from="1571071193266" duration="3005000" />
     </task>
     <servers />
   </component>
