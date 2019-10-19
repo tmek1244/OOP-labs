@@ -12,7 +12,7 @@ class Vector2dTest {
     private Vector2d z;
     private Vector2d t;
     @BeforeEach
-    void create()
+    void setUp()
     {
         x = new Vector2d(1,2);
         y = new Vector2d(-2, 3);
@@ -77,8 +77,8 @@ class Vector2dTest {
 
     @Test
     void testEquals() {
-        assertTrue(x.equals(x));
-        assertFalse(x.equals(y));
+        assertEquals(x, x);
+        assertNotEquals(x, y);
         assertNotEquals(y, z);
     }
 

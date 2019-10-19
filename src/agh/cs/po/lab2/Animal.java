@@ -37,4 +37,14 @@ public class Animal {
             this.position = nextPosition;
     }
 
+    public MapDirection getOrientation()
+    {
+        return this.orientation;
+    }
+
+    public Vector2d getPosition()
+    {
+        return this.position;
+    }
+
 }

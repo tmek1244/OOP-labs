@@ -1,7 +1,7 @@
 package agh.cs.po.lab2;
 
 public class OptionsParser {
-    static MoveDirection[] fromStrings(String[] args){
+    public static MoveDirection[] fromStrings(String[] args){
         MoveDirection[] directions = new MoveDirection[args.length];
         for(int i = 0; i < args.length; i++){
             directions[i] = changeStringToDirection(args[i].toLowerCase());
