@@ -10,11 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AnimalTest {
     private Animal testAnimal;
+    RectangularMap map = new RectangularMap(5,5);
 
     @BeforeEach
     void setUp()
     {
-        testAnimal = new Animal();
+        testAnimal = new Animal(map);
     }
 
     @Test
