@@ -37,6 +37,17 @@ public class Animal {
             moveTo(Objects.requireNonNull(this.orientation.toUnitVector()).opposite());
 
     }
+
+    public Vector2d getPredictedPosition(MoveDirection direction)
+    {
+        if(direction == MoveDirection.FORWARD)
+            return this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()));
+        else if(direction == MoveDirection.BACKWARD)
+            return this.position.add(Objects.requireNonNull(this.orientation.toUnitVector()).opposite());
+        else
+            return this.position;
+    }
+
     private void moveTo(Vector2d moveDirection)
     {
         Vector2d nextPosition = this.position.add(moveDirection);

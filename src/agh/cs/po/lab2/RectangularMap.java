@@ -28,13 +28,18 @@ public class RectangularMap implements IWorldMap{
         if(this.isOccupied(animal.getPosition()))
             return false;
         this.usedMapCoords.put(animal.getPosition().toString(), animal);
-        this.animals.add(animal);
+        if(!this.animals.contains(animal))
+            this.animals.add(animal);
         return true;
     }
 
     @Override
     public void run(MoveDirection[] directions) {
-
+        for(int i = 0; i < directions.length; i++)
+        {
+            this.moveAnimal(this.animals.get(i%animals.size()), directions[i]);
+//            System.out.println(this);
+        }
     }
 
     @Override
@@ -47,5 +52,27 @@ public class RectangularMap implements IWorldMap{
         if(this.isOccupied(position))
             return this.usedMapCoords.get(position.toString());
         return null;
+    }
+
+    public String toString()
+    {
+        MapVisualizer mapVisualizer = new MapVisualizer(this);
+        return mapVisualizer.draw(this.lowerLeft, this.upperRight);
+    }
+
+    private void moveAnimal(Animal thisAnimal, MoveDirection direction)
+    {
+        if(direction == MoveDirection.LEFT || direction == MoveDirection.RIGHT)
+            thisAnimal.move(direction);
+        else
+        {
+            if(!this.isOccupied(thisAnimal.getPredictedPosition(direction)))
+            {
+                this.usedMapCoords.remove(thisAnimal.getPosition().toString());
+                thisAnimal.move(direction);
+                if(!this.place(thisAnimal))
+                    System.out.println("Something happened, what shouldn't happened");
+            }
+        }
     }
 }
