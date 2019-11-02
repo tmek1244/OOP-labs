@@ -38,6 +38,7 @@ class AnimalTest {
         testAnimal.move(MoveDirection.FORWARD);
         assertEquals(new Vector2d(2,3), testAnimal.getPosition());
         testAnimal.move(MoveDirection.FORWARD);
+        System.out.println(map);
         testAnimal.move(MoveDirection.FORWARD);
         assertEquals(new Vector2d(2,4), testAnimal.getPosition());
         testAnimal.move(MoveDirection.LEFT);

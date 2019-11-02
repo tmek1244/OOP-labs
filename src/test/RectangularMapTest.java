@@ -11,14 +11,14 @@ class RectangularMapTest {
 
     @BeforeEach
     void setUp() {
-        map = new RectangularMap(10, 5);
+        map = new RectangularMap(11, 6);
     }
 
     @Test
     void mapMovementTest1()
     {
-        map.place(new Animal(map));
-        map.place(new Animal(map,new Vector2d(3,4)));
+        map.placeAnimal(new Animal(map));
+        map.placeAnimal(new Animal(map,new Vector2d(3,4)));
         MoveDirection[] directions = OptionsParser.fromStrings("f b r l f f r r f f f f f f f f b b b l r r r".split(" "));
         String result = map.toString();
         map.run(directions);
@@ -28,9 +28,9 @@ class RectangularMapTest {
     @Test
     void mapMovementTest2()
     {
-        map.place(new Animal(map));
-        map.place(new Animal(map,new Vector2d(3,4)));
-        map.place(new Animal(map, new Vector2d(1,1)));
+        map.placeAnimal(new Animal(map));
+        map.placeAnimal(new Animal(map,new Vector2d(3,4)));
+        map.placeAnimal(new Animal(map, new Vector2d(1,1)));
         MoveDirection[] directions = OptionsParser.fromStrings("f l l l f l f f r l b r f b l l r r f r r l l l".split(" "));
         String result = map.toString();
         map.run(directions);
@@ -40,12 +40,16 @@ class RectangularMapTest {
     @Test
     void mapMovementTest3()
     {
-        map.place(new Animal(map, new Vector2d(0,0)));
-        map.place(new Animal(map, new Vector2d(10, 5)));
-        map.place(new Animal(map, new Vector2d(9, 5)));
-        MoveDirection[] directions = OptionsParser.fromStrings("".split("b f f b f f b "));
-        String result = map.toString();
+        map.placeAnimal(new Animal(map, new Vector2d(0,0)));
+        map.placeAnimal(new Animal(map, new Vector2d(7, 5)));
+        map.placeAnimal(new Animal(map, new Vector2d(9, 5)));
+        map.placeAnimal(new Animal(map, new Vector2d(-10, -10)));
+        MoveDirection[] directions = OptionsParser.fromStrings("f r b b b b l r l f f f f f l f f f".split(" "));
         map.run(directions);
-        assertEquals(result, map.toString());
+        System.out.println(map);
+        assertTrue(map.isOccupied(new Vector2d(0,0)));
+        assertTrue(map.isOccupied(new Vector2d(6,2)));
+        assertTrue(map.isOccupied(new Vector2d(8,2)));
+
     }
 }
