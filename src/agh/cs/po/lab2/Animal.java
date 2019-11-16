@@ -1,11 +1,14 @@
 package agh.cs.po.lab2;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Animal implements IMapElement{
     private MapDirection orientation;
     private Vector2d position;
     private IWorldMap map;
+    private List<IPositionChangeObserver> observers = new ArrayList<>();
 
     public Animal(IWorldMap map)
     {
@@ -25,21 +28,20 @@ public class Animal implements IMapElement{
         return this.orientation.toString();
     }
 
-    public boolean move(MoveDirection direction)
+    public void move(MoveDirection direction)
     {
+        Vector2d oldPosition = this.getPosition();
         if(direction == MoveDirection.RIGHT) {
             this.orientation = this.orientation.next();
-            return false;
         }
-        if(direction == MoveDirection.LEFT) {
+        else if(direction == MoveDirection.LEFT) {
             this.orientation = this.orientation.previous();
-            return false;
         }
-        if(direction == MoveDirection.FORWARD)
-            return moveBy(this.orientation.toUnitVector());
-        if(direction == MoveDirection.BACKWARD)
-            return moveBy(Objects.requireNonNull(this.orientation.toUnitVector()).opposite());
-        return false;
+        else if(direction == MoveDirection.FORWARD)
+            moveBy(this.orientation.toUnitVector());
+        else  if(direction == MoveDirection.BACKWARD)
+            moveBy(Objects.requireNonNull(this.orientation.toUnitVector()).opposite());
+        this.positionChanged(oldPosition);
     }
 
     public Vector2d getPredictedPosition(MoveDirection direction)
@@ -52,13 +54,11 @@ public class Animal implements IMapElement{
             return this.position;
     }
 
-    private boolean moveBy(Vector2d moveDirection) {
+    private void moveBy(Vector2d moveDirection) {
         Vector2d nextPosition = this.position.add(moveDirection);
         if (map.canMoveTo(nextPosition)) {
             this.position = nextPosition;
-            return true;
         }
-        return false;
     }
     public MapDirection getOrientation()
     {
@@ -70,4 +70,22 @@ public class Animal implements IMapElement{
         return this.position;
     }
 
+
+    void addObserver(IPositionChangeObserver observer)
+    {
+        this.observers.add(observer);
+    }
+
+    void removeObserver(IPositionChangeObserver observer)
+    {
+        this.observers.remove(observer);
+    }
+
+    private void positionChanged(Vector2d oldPosition)
+    {
+        for(IPositionChangeObserver observer: this.observers)
+        {
+            observer.positionChanged(oldPosition, this.getPosition());
+        }
+    }
 }

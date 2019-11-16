@@ -9,17 +9,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UnboundedMapTest {
+class GrassFieldTest {
     IWorldMap map;
-    private List<Stone> stones = new ArrayList<>();
+    private List<Grass> grasses = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-        stones.add(new Stone(new Vector2d(-4,-4)));
-        stones.add(new Stone(new Vector2d(7,7)));
-        stones.add(new Stone(new Vector2d(3,6)));
-        stones.add(new Stone(new Vector2d(2,0)));
-        map = new UnboundedMap(stones);
+//        grasses.add(new Grass(new Vector2d(-4,-4)));
+//        grasses.add(new Grass(new Vector2d(7,7)));
+//        grasses.add(new Grass(new Vector2d(3,6)));
+//        grasses.add(new Grass(new Vector2d(2,0)));
+        map = new GrassField(10);
     }
 
     @Test
@@ -30,10 +30,10 @@ class UnboundedMapTest {
         MoveDirection[] directions = OptionsParser.fromStrings("f b r l f f r r f f f f f f f f b b b l r r r".split(" "));
         String result = map.toString();
         map.run(directions);
-        assertTrue(map.isOccupied(new Vector2d(3,4)));
-        assertTrue(map.isOccupied(new Vector2d(2,3)));
 //        System.out.println(map);
 //        System.out.println(result);
+        assertTrue(map.objectAt(new Vector2d(3,6)) instanceof Animal);
+        assertTrue(map.isOccupied(new Vector2d(2,1)));
 //        assertEquals(result, map.toString());
     }
 
@@ -58,7 +58,7 @@ class UnboundedMapTest {
         MoveDirection[] directions = OptionsParser.fromStrings("b f f b f f b ".split(" "));
         String result = map.toString();
         map.run(directions);
-        System.out.println(map);
+//        System.out.println(map);
         assertTrue(map.isOccupied(new Vector2d(0,-3)));
         assertTrue(map.isOccupied(new Vector2d(-1,4)));
         assertTrue(map.isOccupied(new Vector2d(1,3)));

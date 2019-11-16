@@ -9,7 +9,7 @@ public class OptionsParser {
         return directions;
     }
 
-    private static MoveDirection changeStringToDirection(String arg){
+    private static MoveDirection changeStringToDirection(String arg) throws IllegalArgumentException{
         switch (arg){
             case "forward":
             case "f":
@@ -24,7 +24,7 @@ public class OptionsParser {
             case "right":
                 return MoveDirection.RIGHT;
             default:
-                return null;
+                throw new IllegalArgumentException(arg + " is not legal move specification");
         }
     }
 }

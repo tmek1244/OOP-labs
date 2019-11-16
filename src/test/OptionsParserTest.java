@@ -16,6 +16,10 @@ class OptionsParserTest {
         MoveDirection[] result = {MoveDirection.FORWARD, MoveDirection.FORWARD, MoveDirection.BACKWARD,
                 MoveDirection.BACKWARD, null, MoveDirection.LEFT, MoveDirection.LEFT, null, MoveDirection.RIGHT,
                 MoveDirection.RIGHT};
-        Assertions.assertArrayEquals(OptionsParser.fromStrings(args), result);
+//        Assertions.assertArrayEquals(OptionsParser.fromStrings(args), result);
+        assertThrows(IllegalArgumentException.class, () -> {
+            OptionsParser.fromStrings(args);
+        });
     }
+
 }

@@ -43,10 +43,13 @@ class RectangularMapTest {
         map.placeAnimal(new Animal(map, new Vector2d(0,0)));
         map.placeAnimal(new Animal(map, new Vector2d(7, 5)));
         map.placeAnimal(new Animal(map, new Vector2d(9, 5)));
-        map.placeAnimal(new Animal(map, new Vector2d(-10, -10)));
+
         MoveDirection[] directions = OptionsParser.fromStrings("f r b b b b l r l f f f f f l f f f".split(" "));
         map.run(directions);
-        System.out.println(map);
+//        System.out.println(map);
+        assertThrows(IllegalArgumentException.class, () ->{
+            map.placeAnimal(new Animal(map, new Vector2d(-10, -10)));
+        });
         assertTrue(map.isOccupied(new Vector2d(0,0)));
         assertTrue(map.isOccupied(new Vector2d(6,2)));
         assertTrue(map.isOccupied(new Vector2d(8,2)));

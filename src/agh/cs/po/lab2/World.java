@@ -10,13 +10,20 @@ public class World {
 //            newAnimal.move(move);
 //        }
 //        System.out.println(newAnimal);
-        MoveDirection[] directions = OptionsParser.fromStrings(args);
-        IWorldMap map = new RectangularMap(10, 5);
-//        map.place(new Animal(map));
-        map.placeAnimal(new Animal(map, new Vector2d(0,0)));
-        map.placeAnimal(new Animal(map, new Vector2d(10, 5)));
-        System.out.println(map);
-        map.run(directions);
-        System.out.println(map);
+        try {
+            MoveDirection[] directions = OptionsParser.fromStrings(args);
+            IWorldMap map = new RectangularMap(10, 5);
+            //        map.place(new Animal(map));
+            map.placeAnimal(new Animal(map, new Vector2d(0, 0)));
+            map.placeAnimal(new Animal(map, new Vector2d(9, 3)));
+//            map.placeAnimal(new Animal(map, new Vector2d(9, 3)));
+            System.out.println(map);
+            map.run(directions);
+            System.out.println(map);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e);
+        }
     }
 }

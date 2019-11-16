@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-public abstract class AbstractWorldMap implements IWorldMap{
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected Vector2d lowerLeft;
     protected Vector2d upperRight;
     protected List<Animal> animals = new ArrayList<>();
-    protected Hashtable<String, IMapElement> usedMapCoords = new Hashtable<String, IMapElement>();
+    protected Hashtable<Vector2d, Animal> usedMapCoords = new Hashtable<Vector2d, Animal>();
+
 
     protected AbstractWorldMap(Vector2d lowerLeft, Vector2d upperRight)
     {
@@ -20,8 +21,8 @@ public abstract class AbstractWorldMap implements IWorldMap{
     public boolean placeAnimal(Animal animal)
     {
         if(!canMoveTo(animal.getPosition()))
-            return false;
-        this.usedMapCoords.put(animal.getPosition().toString(), animal);
+            throw new IllegalArgumentException("Position " +animal.getPosition()+ " is occupied or is out of map!");
+        this.usedMapCoords.put(animal.getPosition(), animal);
         this.animals.add(animal);
         return true;
     }
@@ -33,14 +34,12 @@ public abstract class AbstractWorldMap implements IWorldMap{
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return this.usedMapCoords.containsKey(position.toString());
+        return this.usedMapCoords.containsKey(position);
     }
 
     @Override
     public Object objectAt(Vector2d position) {
-        if(this.isOccupied(position))
-            return this.usedMapCoords.get(position.toString());
-        return null;
+        return this.usedMapCoords.getOrDefault(position, null);
     }
 
     public String toString()
@@ -61,9 +60,17 @@ public abstract class AbstractWorldMap implements IWorldMap{
     protected void moveAnimal(Animal thisAnimal, MoveDirection direction)
     {
         Vector2d previousPosition = thisAnimal.getPosition();
-        if(thisAnimal.move(direction)) {
-            this.usedMapCoords.remove(previousPosition.toString());
-            this.usedMapCoords.put(thisAnimal.getPosition().toString(), thisAnimal);
+        thisAnimal.move(direction);
+        if(!thisAnimal.getPosition().equals(previousPosition)) {
+            this.positionChanged(previousPosition, thisAnimal.getPosition());
         }
     }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
+    {
+        Animal thisAnimal = this.usedMapCoords.get(oldPosition);
+        this.usedMapCoords.remove(oldPosition);
+        this.usedMapCoords.put(newPosition, thisAnimal);
+    }
+
 }

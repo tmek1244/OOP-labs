@@ -1,9 +1,9 @@
 package agh.cs.po.lab2;
 
-public class Stone implements IMapElement{
+public class Grass implements IMapElement{
     private Vector2d position;
 
-    public Stone(Vector2d position)
+    public Grass(Vector2d position)
     {
         this.position = position;
     }
@@ -15,6 +15,6 @@ public class Stone implements IMapElement{
 
     public String toString()
     {
-        return "s";
+        return "G";
     }
 }
