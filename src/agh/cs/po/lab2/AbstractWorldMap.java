@@ -11,6 +11,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     protected Hashtable<Vector2d, Animal> usedMapCoords = new Hashtable<Vector2d, Animal>();
 
 
+
     protected AbstractWorldMap(Vector2d lowerLeft, Vector2d upperRight)
     {
         this.lowerLeft = lowerLeft;
@@ -52,8 +53,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public void run(MoveDirection[] directions) {
         for(int i = 0; i < directions.length; i++)
         {
-            this.moveAnimal(this.animals.get(i%this.animals.size()), directions[i]);
+//            this.moveAnimal(this.animals.get(i%this.animals.size()), directions[i]);
 //            System.out.println(this.toString() + " " + directions[i]);
+            this.animals.get(i%this.animals.size()).move(directions[i]);
         }
     }
 
@@ -68,9 +70,11 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
-        Animal thisAnimal = this.usedMapCoords.get(oldPosition);
-        this.usedMapCoords.remove(oldPosition);
-        this.usedMapCoords.put(newPosition, thisAnimal);
+        if(oldPosition != newPosition) {
+            Animal thisAnimal = this.usedMapCoords.get(oldPosition);
+            this.usedMapCoords.remove(oldPosition);
+            this.usedMapCoords.put(newPosition, thisAnimal);
+        }
     }
 
 }

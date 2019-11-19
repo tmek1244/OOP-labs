@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class GrassField extends AbstractWorldMap implements IWorldMap {
     protected Hashtable<Vector2d, Grass> grassCoords = new Hashtable<Vector2d, Grass>();
+    private MapBoundary mapBoundary = new MapBoundary();
+
     public GrassField(int howManyGrasses)
     {
         super(new Vector2d(0,0), new Vector2d(0,0));
@@ -18,7 +20,8 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
             if(!this.grassCoords.containsKey(grassPosition)) {
                 Grass grass = new Grass(grassPosition);
                 this.grassCoords.put(grassPosition, grass);
-                updateCorners(grass.getPosition());
+                this.mapBoundary.addPosition(grassPosition);
+//                updateCorners(grass.getPosition());
                 howManyGrasses--;
             }
         }
@@ -27,7 +30,9 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
     @Override
     public boolean placeAnimal(Animal animal) throws IllegalArgumentException{
         if(super.placeAnimal(animal)) {
-            updateCorners(animal.getPosition());
+            animal.addObserver(this);
+            animal.addObserver(this.mapBoundary);
+//            updateCorners(animal.getPosition());
             return true;
         }
         throw new IllegalArgumentException("Position " +animal.getPosition()+ " is occupied!");
@@ -51,16 +56,29 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
         return this.grassCoords.getOrDefault(position, null);
     }
 
-    private void updateCorners(Vector2d point)
+//    private void updateCorners(Vector2d point)
+//    {
+//        this.upperRight = this.upperRight.upperRight(point);
+//        this.lowerLeft = this.lowerLeft.lowerLeft(point);
+//    }
+//
+//    @Override
+//    protected void moveAnimal(Animal thisAnimal, MoveDirection direction)
+//    {
+//        super.moveAnimal(thisAnimal, direction);
+//        updateCorners(thisAnimal.getPosition());
+//    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
-        this.upperRight = this.upperRight.upperRight(point);
-        this.lowerLeft = this.lowerLeft.lowerLeft(point);
+        super.positionChanged(oldPosition, newPosition);
+//        mapBoundary.positionChanged(oldPosition, newPosition);
     }
 
     @Override
-    protected void moveAnimal(Animal thisAnimal, MoveDirection direction)
-    {
-        super.moveAnimal(thisAnimal, direction);
-        updateCorners(thisAnimal.getPosition());
+    public String toString() {
+        MapVisualizer mapVisualizer = new MapVisualizer(this);
+        return mapVisualizer.draw(this.mapBoundary.getLowerLeft(), this.mapBoundary.getUpperRight());
     }
 }

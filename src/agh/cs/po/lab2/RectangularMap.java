@@ -12,6 +12,16 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap{
     }
 
     @Override
+    public boolean placeAnimal(Animal animal)
+    {
+        if(super.placeAnimal(animal)) {
+            animal.addObserver(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean canMoveTo(Vector2d position) {
         return position.precedes(this.upperRight) && position.follows(this.lowerLeft) && super.canMoveTo(position);
     }

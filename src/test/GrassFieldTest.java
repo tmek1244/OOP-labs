@@ -59,6 +59,7 @@ class GrassFieldTest {
         String result = map.toString();
         map.run(directions);
 //        System.out.println(map);
+//        System.out.println(result);
         assertTrue(map.isOccupied(new Vector2d(0,-3)));
         assertTrue(map.isOccupied(new Vector2d(-1,4)));
         assertTrue(map.isOccupied(new Vector2d(1,3)));
